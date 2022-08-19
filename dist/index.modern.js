@@ -18,37 +18,6 @@ function _extends() {
   return _extends.apply(this, arguments);
 }
 
-function isGoogleMapScriptLoaded(id) {
-  var scripts = document.head.getElementsByTagName('script');
-
-  for (var i = 0; i < scripts.length; i++) {
-    if (scripts[i].getAttribute('id') === id) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-function loadScript(src, id) {
-  if (isGoogleMapScriptLoaded(id)) {
-    return new Promise(function (resolve) {
-      return setTimeout(resolve, 500);
-    });
-  }
-
-  var script = document.createElement('script');
-  script.setAttribute('async', '');
-  script.setAttribute('id', id);
-  script.src = src;
-  document.querySelector('head').appendChild(script);
-  return new Promise(function (resolve) {
-    script.onload = function () {
-      resolve();
-    };
-  });
-}
-
 var MapTypeId;
 
 (function (MapTypeId) {
@@ -62,11 +31,8 @@ function isValidLocation(location) {
   return location && Math.abs(location.lat) <= 90 && Math.abs(location.lng) <= 180;
 }
 
-var GOOGLE_SCRIPT_URL = 'https://maps.googleapis.com/maps/api/js?libraries=places&key=';
-
 var MapPicker = function MapPicker(_ref) {
-  var apiKey = _ref.apiKey,
-      defaultLocation = _ref.defaultLocation,
+  var defaultLocation = _ref.defaultLocation,
       _ref$zoom = _ref.zoom,
       zoom = _ref$zoom === void 0 ? 7 : _ref$zoom,
       onChangeLocation = _ref.onChangeLocation,
@@ -122,7 +88,7 @@ var MapPicker = function MapPicker(_ref) {
   }
 
   React.useEffect(function () {
-    loadScript(GOOGLE_SCRIPT_URL + apiKey, 'google-maps-' + apiKey).then(loadMap);
+    loadMap();
   }, []);
   React.useEffect(function () {
     if (marker.current) {

@@ -10,7 +10,6 @@ declare enum MapTypeId {
     Terrain = "terrain"
 }
 declare type Props = {
-    apiKey: string;
     defaultLocation: Location;
     zoom?: number;
     onChangeLocation?(lat: number, lng: number): void;
